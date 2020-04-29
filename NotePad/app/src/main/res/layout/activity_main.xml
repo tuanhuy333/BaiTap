@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Time Updated"
+        android:layout_margin="10dp"
+        android:textColor="#E91E63"
+        android:textSize="18sp"
+        android:id="@+id/txt_dateUpdate"/>
+    <ScrollView
+        android:layout_marginHorizontal="10dp"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_title"
+                android:text="There are my note !"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Thêm note của bạn vào đây !"
+                android:layout_below="@id/txt_title"
+                android:id="@+id/edt_note"
+                android:background="@null"/>
+
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+
+</LinearLayout>

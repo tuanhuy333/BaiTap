@@ -1,0 +1,2 @@
+rootProject.name='Bai3_Landmarks'
+include ':app'
