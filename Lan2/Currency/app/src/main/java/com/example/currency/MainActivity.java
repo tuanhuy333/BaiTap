@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     EditText edt1, edt2;
     Button btn;
     ImageView img_convert;
+    ProgressBar progressBar;
 
 
     String url = "https://vnd.fxexchangerate.com/rss.xml"; //mặc định để tạo data for spinner
@@ -53,13 +55,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt = findViewById(R.id.txt);
-        spinner1 = findViewById(R.id.mSpinner1);
-        spinner2 = findViewById(R.id.mSpinner2);
-        btn = findViewById(R.id.button);
-        edt1 = findViewById(R.id.editText);
-        edt2 = findViewById(R.id.editText2);
-        img_convert = findViewById(R.id.img_convert);
+
+        //
+        initView();
+
+
 
 
         //click vào chuyển đổi qua lại giữa 2 spinner
@@ -90,6 +90,17 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Thiết bị của bạn chưa kết nối internet!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void initView() {
+        txt = findViewById(R.id.txt);
+        spinner1 = findViewById(R.id.mSpinner1);
+        spinner2 = findViewById(R.id.mSpinner2);
+        btn = findViewById(R.id.button);
+        edt1 = findViewById(R.id.editText);
+        edt2 = findViewById(R.id.editText2);
+        img_convert = findViewById(R.id.img_convert);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     //truyen vao chuoi description vn => ...
@@ -139,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             // Toast.makeText(MainActivity.this, "Asynctask running...", Toast.LENGTH_SHORT).show();
             super.onPreExecute();
+
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -175,6 +188,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
+            //biến mất progressBar
+            progressBar.setVisibility(View.INVISIBLE);
+            
 
 
             //sử dụng XMLDomParse
@@ -257,7 +274,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void get_data_for_spinner(List<String> data_list) {
         //spinner
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, data_list);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item, data_list);
         spinner1.setAdapter(arrayAdapter);
         spinner2.setAdapter(arrayAdapter);
 
