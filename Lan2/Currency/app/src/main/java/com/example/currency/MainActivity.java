@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         } else {
-            Toast.makeText(this, "Thiết bị của bạn chưa kết nối internet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Thiết bị của bạn chưa kết nối internet!", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
             //biến mất progressBar
             progressBar.setVisibility(View.INVISIBLE);
-            
+
 
 
             //sử dụng XMLDomParse
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 String title = xmlDomParser.getValue(element, "title");
                 String main_s = title.replace("Vietnam Dong(VND)/", "");
 
-                //String time = xmlDomParser.getValue(element, "pubDate");
+                String time = xmlDomParser.getValue(element, "pubDate");
 
 
                 //lấy descrption
@@ -229,8 +229,9 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "set data spinner", Toast.LENGTH_SHORT).show();
             }
 
-            //Toast.makeText(MainActivity.this, currency_type_list.get(1), Toast.LENGTH_SHORT)
-            // .show();
+            //toast Date update
+
+            //Toast.makeText(MainActivity.this, , Toast.LENGTH_SHORT).show();
 
 
             //viet btn.setOnClick
@@ -288,7 +289,13 @@ public class MainActivity extends AppCompatActivity {
                 String code = get_code_currency_from_title(currency_type_list.get(position));
                 url = "https://" + code.toLowerCase() + ".fxexchangerate.com/rss.xml";
                 //execute Asynctask theo spinner selected item với url mới đã phát sinh
-                new Asynctask_getXML().execute(url);
+                if(isNetworkAvailable(getApplicationContext())){
+                    new Asynctask_getXML().execute(url);
+                }else{
+                    Toast.makeText(MainActivity.this, "Thiết bị của bạn chưa kết nối internet!",
+                            Toast.LENGTH_LONG).show();
+                }
+
                 //Toast.makeText(MainActivity.this, url, Toast.LENGTH_SHORT).show();
             }
 
