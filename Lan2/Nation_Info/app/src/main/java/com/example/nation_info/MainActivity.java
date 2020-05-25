@@ -1,6 +1,7 @@
 package com.example.nation_info;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,10 +11,15 @@ import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
@@ -37,6 +43,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.net.ssl.HttpsURLConnection;
+
 // java.net.SocketException: socket failed: EPERM (Operation not permitted)
 // uninstall app cài lại
 
@@ -50,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
     //
     ListView listView;
+    ArrayAdapter arrayAdapter;
+    ProgressBar progressBar;
+    TextView txt;
 
     //
     ArrayList<String> arrayList;
@@ -60,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.mListView);
+        progressBar = findViewById(R.id.progressBar);
+        txt = findViewById(R.id.txt);
 
 
         //
@@ -69,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Thiết bị của bạn chưa có kết internet !", Toast.LENGTH_SHORT).show();
         }
-
-
 
 
     }
@@ -95,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+            txt.setText("Mạng hơi chậm . Hãy đợi 1 chút nhé !");
+
+            Toast.makeText(MainActivity.this, "Asysncing...", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -120,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         stringBuilder.append(line + "\n");
                     }
                     json = stringBuilder.toString().trim();
-
+                    // Toast.makeText(MainActivity.this, json, Toast.LENGTH_SHORT).show();
 
                     Log.d("a", json);
                 }
@@ -141,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.INVISIBLE);
+            txt.setText("");
 
             //parse data string to JSON
             try {
@@ -167,14 +183,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-                ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList);
+                arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList);
 
                 listView.setAdapter(arrayAdapter);
+
 
                 //click item list view sẽ sang Activity khác và hiện thông tin
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        Toast.makeText(MainActivity.this, arrayList.get(position), Toast.LENGTH_SHORT).show();
 
                         try {
                             String tenquocgia = arrayList.get(position);
@@ -195,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(i);
 
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -213,6 +231,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+
         }
     }
+
 }
+

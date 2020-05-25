@@ -37,6 +37,8 @@ import javax.net.ssl.HttpsURLConnection;
 // java.net.SocketException: socket failed: EPERM (Operation not permitted)
 // uninstall app cài lại
 
+//nếu muốn khi bật internet thì tiếp tục load thì dùng BroadcastReceiver
+
 public class MainActivity extends AppCompatActivity {
     TextView txt;
     Spinner spinner1, spinner2;
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             // Toast.makeText(MainActivity.this, "Asynctask running...", Toast.LENGTH_SHORT).show();
             super.onPreExecute();
-
+            txt.setText("Đợi 1 chút !");
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -191,10 +193,11 @@ public class MainActivity extends AppCompatActivity {
 
             //biến mất progressBar
             progressBar.setVisibility(View.INVISIBLE);
+            txt.setText("Đã load xong !");
 
 
 
-            //sử dụng XMLDomParse
+            //sử dụng XMLDomParse lấy về Document từng chuỗi lấy được từ API
             XMLDomParser xmlDomParser = new XMLDomParser();
             Document document = xmlDomParser.getDocument(s);
 
@@ -206,13 +209,14 @@ public class MainActivity extends AppCompatActivity {
             currency_type_list = new ArrayList<>();
             description_list = new ArrayList<>();
 
+            String time = null;
             for (int i = 0; i < nodeList.getLength(); ++i) {
                 Element element = (Element) nodeList.item(i); //node thứ bao nhiêu
                 //lấy title
                 String title = xmlDomParser.getValue(element, "title");
                 String main_s = title.replace("Vietnam Dong(VND)/", "");
 
-                String time = xmlDomParser.getValue(element, "pubDate");
+                time = xmlDomParser.getValue(element, "pubDate");
 
 
                 //lấy descrption
@@ -221,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
                 description_list.add(decription);
                 currency_type_list.add(main_s);
+               
 
             }
             //get_data_for_spinner(currency_type_list);
@@ -231,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
             //toast Date update
 
-            //Toast.makeText(MainActivity.this, , Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, time, Toast.LENGTH_SHORT).show();
 
 
             //viet btn.setOnClick
