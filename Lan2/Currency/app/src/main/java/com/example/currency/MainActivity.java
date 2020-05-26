@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         //
         initView();
 
+        
 
 
 
@@ -117,6 +118,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String get_name_country_from_title(String s) {
+        if (s.contains("(") && s.contains(")")) {
+            s = s.replace("(", " ");
+            s = s.replace(")", "");
+
+
+        }
         String[] ar = s.split("\\s");
         return ar[0];
     }
